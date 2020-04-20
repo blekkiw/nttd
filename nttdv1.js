@@ -3,13 +3,12 @@ document.addEventListener('DOMContentLoaded', function () {
     let canvas = document.getElementById("nttd");
     let ctx = canvas.getContext("2d");
     let ballRadius = 5;
-    let x = canvas.width / 2;
-    let y = canvas.height /2 ;
+    let x = canvas.width-ballRadius;
+    let y = canvas.height-ballRadius ;
     let circles =[];
-    let count = 10;
+    let count = 50;
     let dx = 1;
     let dy = -1;
-    let quarantine = false;
     let userCircle = getCircle();
 
     function fillcircles() {
@@ -35,13 +34,16 @@ document.addEventListener('DOMContentLoaded', function () {
             dx: dx,
             dy: dy,
             fillStile: "#"+Math.floor(Math.random()*16777215).toString(16),
-            quarantine: quarantine,
             move: function () {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, ballRadius, 0, Math.PI * 2);
                 ctx.fillStyle = this.fillStile;
                 ctx.fill();
                 ctx.closePath();
+            },
+            changeVector: function () {
+             this.dx = -this.dx;
+             this.dy = -this.dy;
             }
         }
     }
@@ -55,24 +57,27 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function separate(circle) {
-        let filterdCircles = circles.filter(filteredCircle => filteredCircle!==circle)
-        filterdCircles.forEach(item => {
-            if (circle.x > item.x-50 && circle.x < item.x+ballRadius+50 &&
-                circle.y > item.y-50 && circle.y < item.y+ballRadius+50) {
-                item.x += item.x-circle.x;
-                item.y +=  item.y-circle.y;
-                circle.x += circle.x-item.x;
-                circle.y += circle.y-item.y;
+        let separatedCircles = circles.filter(circle1 => circle1!==circle)
+        for (let i = 0; i <separatedCircles.length ; i++) {
+            if (circle.x > separatedCircles[i].x-50 && circle.x < separatedCircles[i].x+ballRadius+50 &&
+                circle.y > separatedCircles[i].y-50 && circle.y < separatedCircles[i].y+ballRadius+50) {
+                circle.x += circle.dx;
+                circle.y += circle.dy;
             }
-
-        })
+        }
+        if (circle.x > userCircle.x-50 && circle.x < userCircle.x+ballRadius+50 &&
+            circle.y > userCircle.y-50 && circle.y < userCircle.y+ballRadius+50) {
+            circle.x += circle.dx;
+            if (Math.random()>0.5) circle.y += circle.dy;
+        }
     }
+
 
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         drawBall(userCircle);
-        for (let i = 0; i <circles.length ; i++) {
-
+        for (let i = 0; i < circles.length ; i++) {
+           separate(circles[i]);
             if (circles[i].x + circles[i].dx > canvas.width - ballRadius ||
                 circles[i].x + circles[i].dx < ballRadius) {
                 circles[i].dx = -circles[i].dx;
@@ -83,25 +88,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 circles[i].dy = -circles[i].dy;
                 if (Math.random()>0.5) circles[i].dx = -circles[i].dx;
             }
-            let inCuar = (circles[i].x > userCircle.x-50 && circles[i].x < userCircle.x+ballRadius+50 &&
-                circles[i].y > userCircle.y-50 && circles[i].y < userCircle.y+ballRadius+50) ;
-            if(inCuar && circles[i].quarantine) {
-                circles[i].dx = -circles[i].dx;
-                circles[i].dy = -circles[i].dy;
-                while (circles[i].quarantine) {
-                    circles[i].x += circles[i].dx;
-                    circles[i].y += circles[i].dy;
-                    if (inCuar) circles[i].quarantine = false;
-                }
-            } else circles[i].quarantine = true;
-          /*  separate(circles[i]);*/
-            circles[i].x += circles[i].dx;
-            circles[i].y += circles[i].dy;
             circles[i].move();
         }
     }
 
     fillcircles();
-        setInterval(draw, 5);
+    setInterval(draw, 5);
 });
 
