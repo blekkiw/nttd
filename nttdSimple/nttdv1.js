@@ -48,17 +48,13 @@ document.addEventListener('DOMContentLoaded', function () {
             dx: dx,
             dy: dy,
             fillStile: healColor,
-            quarantineTime : 0,
+            quarantineTime: 0,
             move: function () {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, ballRadius, 0, Math.PI * 2);
                 ctx.fillStyle = this.fillStile;
                 ctx.fill();
                 ctx.closePath();
-            },
-            changeVector: function () {
-                if (Math.random() > 0.5) this.dx = -this.dx;
-                if (Math.random() > 0.5) this.dy = -this.dy;
             }
         }
     }
@@ -97,8 +93,8 @@ document.addEventListener('DOMContentLoaded', function () {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         drawBall(userCircle);
         for (let i = 0; i < circles.length; i++) {
-            let tempX= circles[i].x;
-            let tempY= circles[i].y;
+            let tempX = circles[i].x;
+            let tempY = circles[i].y;
             separate(circles[i]);
             if (circles[i].x + circles[i].dx > canvas.width - ballRadius ||
                 circles[i].x + circles[i].dx < ballRadius) {
@@ -110,14 +106,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 circles[i].dy = -circles[i].dy;
                 if (Math.random() > 0.5) circles[i].dx = -circles[i].dx;
             }
-            if (tempX===circles[i].x&&tempY===circles[i].y) circles[i].quarantineTime++;
-            if (circles[i].quarantineTime>500) {
-                circles[i].quarantineTime=0;
-                circles[i].fillStile=healColor;
+            if (tempX === circles[i].x && tempY === circles[i].y) circles[i].quarantineTime++;
+            if (circles[i].quarantineTime > 500) {
+                circles[i].quarantineTime = 0;
+                circles[i].fillStile = healColor;
             }
             circles[i].move();
         }
-        if (circles.filter(circle => circle.fillStile===illColor).length===circles.length) {
+        if (circles.filter(circle => circle.fillStile === illColor).length === circles.length) {
             clearInterval(engine);
             gameText.setAttribute("style", "display: block");
             setTimeout(gameOver, 3000);
@@ -131,8 +127,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function newGame() {
-    clearInterval(engine);
-    run();
+        clearInterval(engine);
+        run();
         canvas.setAttribute("style", "display: block");
         newGameButton.setAttribute("style", "display: none");
         gameText.setAttribute("style", "display: none");
