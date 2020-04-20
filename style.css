@@ -19,6 +19,9 @@ body {
 .content-head {
   width: 100%;
   min-height: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
 }
 canvas {
   background: #eee;
