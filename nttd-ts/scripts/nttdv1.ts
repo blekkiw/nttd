@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let mainContent= <HTMLElement> document.getElementsByClassName("main-content")[0]
     canvas.width = mainContent.offsetWidth-50;
 
+
     function countBalls() {
         count = parseInt(form.value);
         circles = [];

@@ -12,7 +12,6 @@ export class Nttd {
     illColor : string = "#cd3333";
     healColor : string = "#9bcd9b";
     userCircle : Circle;
-    engine : number;
 
     constructor(canvas: HTMLCanvasElement, count: number) {
         this.canvas = canvas;
@@ -24,23 +23,58 @@ export class Nttd {
     }
 
 
-    public startGame () {
-        console.log(this.canvas)
-        console.log(this)
-       this.engine = setInterval(this.run, 5)
+
+
+    public run (nttd : Nttd) {
+        nttd.ctx.clearRect(0, 0, nttd.canvas.width, nttd.canvas.height);
+        nttd.userCircle.draw();
+        for (let circle of nttd.circles) {
+            let tempX = circle.xPosition;
+            let tempY = circle.yPosition;
+            nttd.separate(circle);
+            if (circle.xPosition + circle.xVector > nttd.canvas.width - nttd.ballRadius ||
+                circle.xPosition + circle.xVector < nttd.ballRadius) {
+                circle.xVector = -circle.xVector;
+                if (Math.random() > 0.5) circle.yVector = -circle.yVector;
+            }
+            if (circle.yPosition + circle.yVector > nttd.canvas.height - nttd.ballRadius ||
+                circle.yPosition + circle.yVector < nttd.ballRadius) {
+                circle.yVector = -circle.yVector;
+                if (Math.random() > 0.5) circle.xVector = -circle.xVector;
+            }
+            if (tempX === circle.xPosition && tempY === circle.yPosition) circle.quarantineTime++;
+            if (circle.quarantineTime > 1000) {
+                circle.quarantineTime = 0;
+                circle.fillStile = nttd.healColor;
+            }
+
+            circle.draw();
+        }
+        return nttd.circles.filter(circle => circle.fillStile === nttd.illColor).length !== nttd.circles.length;
+
     }
 
-    public run () {
-        console.log(this.canvas)
-        console.log(this)
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.userCircle.draw();
+    private separate(circle : Circle) {
+        let separatedCircles = this.circles.filter(circle1 => circle1 !== circle)
+        for (let separatedCircle of separatedCircles) {
+            if (circle.xPosition > separatedCircle.xPosition - 50 && circle.xPosition < separatedCircle.xPosition + this.ballRadius + 50 &&
+                circle.yPosition > separatedCircle.yPosition - 50 && circle.yPosition < separatedCircle.yPosition + this.ballRadius + 50) {
+                if (circle.fillStile === this.illColor || separatedCircle.fillStile === this.illColor) {
+                    circle.fillStile = this.illColor;
+                    separatedCircle.fillStile = this.illColor;
+                }
+                circle.xPosition += circle.xVector;
+                circle.yPosition += circle.yVector;
+            }
+        }
+        if (circle.xPosition > this.userCircle.xPosition - 50 && circle.xPosition < this.userCircle.xPosition + this.ballRadius + 50 &&
+            circle.yPosition > this.userCircle.yPosition - 50 && circle.yPosition < this.userCircle.yPosition + this.ballRadius + 50) {
+            circle.xPosition += circle.xVector;
+            circle.fillStile = this.userCircle.fillStile;
+            circle.yPosition += circle.yVector;
+        }
     }
 
-
-    private mouseMoveHandler(e) {
-
-    }
 
     private positionGenerator () {
         let startX = (Math.random()*this.canvas.width-this.ballRadius)+this.ballRadius;

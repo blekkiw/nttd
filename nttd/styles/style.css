@@ -7,6 +7,8 @@
 }
 h1 {
   font-family: 'Press Start 2P', cursive;
+  font-weight: 700 !important;
+  font-size: 32px !important;
 }
 canvas {
   background-color: aliceblue;
@@ -14,7 +16,30 @@ canvas {
 body {
   margin: 0;
 }
-.container {
+.info {
+  display: flex;
+  left: 0;
+  top: -550px;
+  flex-direction: column;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  opacity: 1;
+  transition: 1s ease-in-out;
+  visibility: visible;
+}
+.canvas-wrap {
+  position: relative;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 1s ease-in-out;
+  opacity: 0;
+  visibility: hidden;
+}
+.container-main {
   width: 100%;
   margin: 0;
   display: flex;
@@ -37,5 +62,8 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+.content-container {
+  width: 100%;
 }
 /*# sourceMappingURL=style.css.map */
