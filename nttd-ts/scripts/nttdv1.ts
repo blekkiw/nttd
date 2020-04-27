@@ -1,31 +1,36 @@
+import {Circle} from './interfaces'
+
 document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener("mousemove", mouseMoveHandler, false)
-    let canvas = document.getElementById("nttd");
-    let ctx = canvas.getContext("2d");
-    let ballRadius = 5;
-    let x = canvas.width - ballRadius;
-    let y = canvas.height - ballRadius;
+    let canvas : HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("nttd");
+    let ctx: CanvasRenderingContext2D = canvas.getContext("2d");
+    let ballRadius : number = 5;
+    let x : number = canvas.width - ballRadius;
+    let y : number = canvas.height - ballRadius;
     let circles = [];
-    let count = 10;
-    let dx = 1;
-    let dy = -1;
-    let illColor = "#cd3333";
-    let healColor = "#9bcd9b";
-    let userCircle = getCircle();
-    let form = document.getElementById("counter");
+    let count : number = 10;
+    let dx : number = 1;
+    let dy : number = -1;
+    let illColor : string = "#cd3333";
+    let healColor : string = "#9bcd9b";
+    let userCircle : Circle = getCircle();
+    let form = <HTMLInputElement> document.getElementById("counter");
     form.onchange = countBalls;
-    let newGameButton = document.getElementById("newGame");
+    let newGameButton : HTMLElement = document.getElementById("newGame");
     newGameButton.onclick = newGame;
-    let engine;
-    let gameText = document.getElementById("game-text");
+    let engine : number;
+    let gameText : HTMLElement = document.getElementById("game-text");
+
+    let mainContent= <HTMLElement> document.getElementsByClassName("main-content")[0]
+    canvas.width = mainContent.offsetWidth-50;
 
     function countBalls() {
-        count = form.value;
+        count = parseInt(form.value);
         circles = [];
-        fillcircles();
+        fillCircles();
     }
 
-    function fillcircles() {
+    function fillCircles() {
         for (let i = 0; i < count; i++) {
             circles[i] = getCircle();
             console.log(circles[i]);
@@ -39,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
         userCircle.y = e.clientY - rect.top;
     }
 
-    function getCircle() {
+    function getCircle() : Circle{
         return {
             ballRadius: ballRadius,
             ctx: ctx,
@@ -49,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
             dy: dy,
             fillStile: healColor,
             quarantineTime: 0,
-            move: function () {
+            move: function () : void {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, ballRadius, 0, Math.PI * 2);
                 ctx.fillStyle = this.fillStile;
@@ -59,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function drawBall(circle) {
+    function drawBall(circle : Circle) {
         ctx.beginPath();
         ctx.arc(circle.x, circle.y, ballRadius, 0, Math.PI * 2);
         ctx.fillStyle = circle.fillStile;
@@ -67,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
         ctx.closePath();
     }
 
-    function separate(circle) {
+    function separate(circle : Circle) {
         let separatedCircles = circles.filter(circle1 => circle1 !== circle)
         for (let i = 0; i < separatedCircles.length; i++) {
             if (circle.x > separatedCircles[i].x - 50 && circle.x < separatedCircles[i].x + ballRadius + 50 &&
@@ -135,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function run() {
-        fillcircles();
+        fillCircles();
         userCircle.fillStile = illColor;
         engine = setInterval(draw, 5);
 
@@ -145,3 +150,4 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
+export {};

@@ -1,0 +1,41 @@
+@font-face {
+  font-family: 'Press Start 2P';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Press Start 2P Regular'), local('PressStart2P-Regular'), url(https://fonts.gstatic.com/s/pressstart2p/v8/e3t4euO8T-267oIAQAu6jDQyK0nS.ttf) format('truetype');
+}
+h1 {
+  font-family: 'Press Start 2P', cursive;
+}
+canvas {
+  background-color: aliceblue;
+}
+body {
+  margin: 0;
+}
+.container {
+  width: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.header h1 {
+  margin: 5rem;
+}
+.content {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+/*# sourceMappingURL=style.css.map */

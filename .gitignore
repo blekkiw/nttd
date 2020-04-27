@@ -1,3 +1,4 @@
 node_modules
 .idea
 .gitignore
+/node-nttd/node_modules

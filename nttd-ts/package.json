@@ -1,0 +1,19 @@
+{
+  "name": "nttd-ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "scripts/nttdv1.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^3.8.3",
+    "webpack": "^4.43.0"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.9.5",
+    "babel-cli": "^6.26.0"
+  }
+}
